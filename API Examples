@@ -1,0 +1,566 @@
+Simple APIs
+Random User and Fruitvice API Examples
+Estimated time needed: 25 minutes
+Objectives
+After completing this lab you will be able to:
+• Load and use RandomUser API, using RandomUser() Python library
+• Load and use Fruitvice API, using requests Python library
+The purpose of this notebook is to provide more examples on how to use simple APIs. As 
+you have already learned from previous videos and notebooks, API stands for Application 
+Programming Interface and is a software intermediary that allows two applications to talk 
+to each other.
+The advantages of using APIs:
+• Automation. Less human effort is required and workflows can be easily updated to 
+become faster and more productive.
+• Efficiency. It allows to use the capabilities of one of the already developed APIs than
+to try to independently implement some functionality from scratch.
+The disadvantage of using APIs:
+• Secirity. If the API is poorly integrated, it means it will be vulnerable to attacks, 
+resulting in data breeches or losses having financial or reputation implications.
+One of the applications we will use in this notebook is Random User Generator. 
+RandomUser is an open-source, free API providing developers with randomly generated 
+users to be used as placeholders for testing purposes. This makes the tool similar to Lorem 
+Ipsum, but is a placeholder for people instead of text. The API can return multiple results, 
+as well as specify generated user details such as gender, email, image, username, address, 
+title, first and last name, and more. More information on RandomUser can be found here.
+Another example of simple API we will use in this notebook is Fruitvice application. The 
+Fruitvice API webservice which provides data for all kinds of fruit! You can use Fruityvice 
+to find out interesting information about fruit and educate yourself. The webservice is 
+completely free to use and contribute to.
+Example 1: RandomUser API
+Bellow are Get Methods parameters that we can generate. For more information on the 
+parameters, please visit this documentation page.
+Get Methods
+• get_cell()
+• get_city()
+• get_dob()
+• get_email()
+• get_first_name()
+• get_full_name()
+• get_gender()
+• get_id()
+• get_id_number()
+• get_id_type()
+• get_info()
+• get_last_name()
+• get_login_md5()
+• get_login_salt()
+• get_login_sha1()
+• get_login_sha256()
+• get_nat()
+• get_password()
+• get_phone()
+• get_picture()
+• get_postcode()
+• get_registered()
+• get_state()
+• get_street()
+• get_username()
+• get_zipcode()
+To start using the API you can install the randomuser library running the pip install
+command.
+!pip install randomuser
+Collecting randomuser
+ Downloading randomuser-1.6.tar.gz (5.0 kB)
+ Preparing metadata (setup.py) ... user
+ Building wheel for randomuser (setup.py) ... user: 
+filename=randomuser-1.6-py3-none-any.whl size=5067 
+sha256=f1c8eb5bf41736521a3a195c4584dcd00963c1333533d9b3d91ed9792743c8d
+f
+ Stored in directory: 
+/home/jupyterlab/.cache/pip/wheels/21/10/7b/c13bc3e24a3c1000a34554802a
+d8aa0ff27df56366998a0473
+Successfully built randomuser
+Installing collected packages: randomuser
+Successfully installed randomuser-1.6
+Then, we will load the necessary libraries.
+from randomuser import RandomUser
+import pandas as pd
+First, we will create a random user object, r.
+r = RandomUser()
+Then, using generate_users() function, we get a list of random 10 users.
+some_list = r.generate_users(10)
+some_list
+[<randomuser.RandomUser at 0x7f546d2c8cd0>,
+ <randomuser.RandomUser at 0x7f5468364d90>,
+ <randomuser.RandomUser at 0x7f5468364390>,
+ <randomuser.RandomUser at 0x7f5468364a50>,
+ <randomuser.RandomUser at 0x7f5468364850>,
+ <randomuser.RandomUser at 0x7f5468364c50>,
+ <randomuser.RandomUser at 0x7f54683646d0>,
+ <randomuser.RandomUser at 0x7f5468364e90>,
+ <randomuser.RandomUser at 0x7f5468364990>,
+ <randomuser.RandomUser at 0x7f5468364e50>]
+The "Get Methods" functions mentioned at the beginning of this notebook, can generate 
+the required parameters to construct a dataset. For example, to get full name, we call 
+get_full_name() function.
+name = r.get_full_name()
+Let's say we only need 10 users with full names and their email addresses. We can write a 
+"for-loop" to print these 10 users.
+for user in some_list:
+ print (user.get_full_name()," ",user.get_email())
+Meghan Moreno meghan.moreno@example.com
+راد سهيلي مارال mrl.shylyrd@example.com
+Carmen Cruz carmen.cruz@example.com
+Victor Ambrose victor.ambrose@example.com
+Rosemerie Pires rosemerie.pires@example.com
+Enrico Arnaud enrico.arnaud@example.com
+نجاتی سورنا swrn.njty@example.com
+Joel Ollila joel.ollila@example.com
+Elisa Adam elisa.adam@example.com
+حسینی مانی mny.hsyny@example.com
+Exercise 1
+In this Exercise, generate photos of the random 5 users.
+## Write your code here
+for user in some_list:
+ print(user.get_picture())
+https://randomuser.me/api/portraits/women/87.jpg
+https://randomuser.me/api/portraits/women/76.jpg
+https://randomuser.me/api/portraits/women/32.jpg
+https://randomuser.me/api/portraits/men/15.jpg
+https://randomuser.me/api/portraits/women/68.jpg
+https://randomuser.me/api/portraits/men/83.jpg
+https://randomuser.me/api/portraits/men/5.jpg
+https://randomuser.me/api/portraits/men/12.jpg
+https://randomuser.me/api/portraits/women/9.jpg
+https://randomuser.me/api/portraits/men/97.jpg
+To generate a table with information about the users, we can write a function containing all
+desirable parameters. For example, name, gender, city, etc. The parameters will depend on 
+the requirements of the test to be performed. We call the Get Methods, listed at the 
+beginning of this notebook. Then, we return pandas dataframe with the users.
+def get_users():
+ users =[]
+ 
+ for user in RandomUser.generate_users(10):
+ 
+users.append({"Name":user.get_full_name(),"Gender":user.get_gender(),"
+City":user.get_city(),"State":user.get_state(),"Email":user.get_email(
+), "DOB":user.get_dob(),"Picture":user.get_picture()})
+ 
+ return pd.DataFrame(users) 
+get_users()
+ Name Gender City State \
+0 Georgia Wood female Masterton Nelson 
+1 Manuel Costa male Campinas Acre 
+2 Gelcira Moreira female Anápolis Acre 
+3 Lee Simpson male Preston South Yorkshire 
+4 Ryan Zhang male Auckland West Coast 
+5 Adèle Lemaire female Nice Mayenne 
+6 Kerim Köylüoğlu male Burdur Sinop 
+7 Sofia Slawa female Tecumseh British Columbia 
+8 Justin Gagnon male Princeton Ontario 
+9 Ursel Mielke female Bad Wildungen Mecklenburg-Vorpommern 
+ Email DOB \
+0 georgia.wood@example.com 1951-05-15T01:09:44.481Z 
+1 manuel.costa@example.com 1945-07-21T22:52:17.323Z 
+2 gelcira.moreira@example.com 1982-05-04T04:32:19.764Z 
+3 lee.simpson@example.com 1986-04-03T17:54:33.699Z 
+4 ryan.zhang@example.com 1993-03-31T00:19:42.681Z 
+5 adele.lemaire@example.com 1963-06-12T00:15:38.231Z 
+6 kerim.koyluoglu@example.com 1967-08-08T13:20:37.842Z 
+7 sofia.slawa@example.com 1957-07-14T05:55:08.769Z 
+8 justin.gagnon@example.com 1977-11-12T22:39:16.336Z 
+9 ursel.mielke@example.com 1983-11-25T12:56:45.497Z 
+ Picture 
+0 https://randomuser.me/api/portraits/women/43.jpg 
+1 https://randomuser.me/api/portraits/men/23.jpg 
+2 https://randomuser.me/api/portraits/women/56.jpg 
+3 https://randomuser.me/api/portraits/men/77.jpg 
+4 https://randomuser.me/api/portraits/men/36.jpg 
+5 https://randomuser.me/api/portraits/women/90.jpg 
+6 https://randomuser.me/api/portraits/men/66.jpg 
+7 https://randomuser.me/api/portraits/women/22.jpg 
+8 https://randomuser.me/api/portraits/men/71.jpg 
+9 https://randomuser.me/api/portraits/women/10.jpg 
+df1 = pd.DataFrame(get_users()) 
+Now we have a pandas dataframe that can be used for any testing purposes that the tester 
+might have.
+Example 2: Fruitvice API
+Another, more common way to use APIs, is through requests library. The next lab, 
+Requests and HTTP, will contain more information about requests.
+We will start by importing all required libraries.
+import requests
+import json
+We will obtain the fruitvice API data using requests.get("url") function. The data is in 
+a json format.
+data = requests.get("https://www.fruityvice.com/api/fruit/all")
+We will retrieve results using json.loads() function.
+results = json.loads(data.text)
+We will convert our json data into pandas data frame.
+pd.DataFrame(results)
+ genus name id family order \
+0 Malus Apple 6 Rosaceae Rosales 
+1 Prunus Apricot 35 Rosaceae Rosales 
+2 Musa Banana 1 Musaceae Zingiberales 
+3 Rubus Blackberry 64 Rosaceae Rosales 
+4 Fragaria Blueberry 33 Rosaceae Rosales 
+5 Prunus Cherry 9 Rosaceae None 
+6 Durio Durian 60 Malvaceae Malvales 
+7 Ficus Fig 68 Moraceae Rosales 
+8 Ribes Gooseberry 69 Grossulariaceae Saxifragales 
+9 Vitis Grapes 47 Vitaceae Vitales 
+10 Malus GreenApple 72 Rosaceae Rosales 
+11 Psidium Guava 37 Myrtaceae Myrtales 
+12 Apteryx Kiwi 66 Actinidiaceae Struthioniformes 
+13 Citrus Lemon 26 Rutaceae Sapindales 
+14 Citrus Lime 44 Rutaceae Sapindales 
+15 Vaccinium Lingonberry 65 Ericaceae Ericales 
+16 Litchi Lychee 67 Sapindaceae Sapindales 
+17 Mangifera Mango 27 Anacardiaceae Sapindales 
+18 Cucumis Melon 41 Cucurbitaceae Cucurbitaceae 
+19 Citrus Orange 2 Rutaceae Sapindales 
+20 Carica Papaya 42 Caricaceae Caricacea 
+21 Passiflora Passionfruit 70 Passifloraceae Malpighiales 
+22 Pyrus Pear 4 Rosaceae Rosales 
+23 Diospyros Persimmon 52 Ebenaceae Rosales 
+24 Ananas Pineapple 10 Bromeliaceae Poales 
+25 Prunus Plum 71 Rosaceae Rosales 
+26 Rubus Raspberry 23 Rosaceae Rosales 
+27 Fragaria Strawberry 3 Rosaceae Rosales 
+28 Solanum Tomato 5 Solanaceae Solanales 
+29 Spondias Umbu 73 Anacardiaceae 0 
+30 Citrullus Watermelon 25 Cucurbitaceae Cucurbitales 
+ nutritions 
+0 {'carbohydrates': 11.4, 'protein': 0.3, 'fat':... 
+1 {'carbohydrates': 3.9, 'protein': 0.5, 'fat': ... 
+2 {'carbohydrates': 22, 'protein': 1, 'fat': 0.2... 
+3 {'carbohydrates': 9, 'protein': 1.3, 'fat': 0.... 
+4 {'carbohydrates': 5.5, 'protein': 0, 'fat': 0.... 
+5 {'carbohydrates': 12, 'protein': 1, 'fat': 0.3... 
+6 {'carbohydrates': 27.1, 'protein': 1.5, 'fat':... 
+7 {'carbohydrates': 19, 'protein': 0.8, 'fat': 0... 
+8 {'carbohydrates': 10, 'protein': 0.9, 'fat': 0... 
+9 {'carbohydrates': 18.1, 'protein': 0.72, 'fat'... 
+10 {'carbohydrates': 3.1, 'protein': 0.4, 'fat': ... 
+11 {'carbohydrates': 14, 'protein': 2.6, 'fat': 1... 
+12 {'carbohydrates': 15, 'protein': 1.1, 'fat': 0... 
+13 {'carbohydrates': 9, 'protein': 1.1, 'fat': 0.... 
+14 {'carbohydrates': 8.4, 'protein': 0.3, 'fat': ... 
+15 {'carbohydrates': 11.3, 'protein': 0.75, 'fat'... 
+16 {'carbohydrates': 17, 'protein': 0.8, 'fat': 0... 
+17 {'carbohydrates': 15, 'protein': 0.82, 'fat': ... 
+18 {'carbohydrates': 8, 'protein': 0, 'fat': 0, '... 
+19 {'carbohydrates': 8.3, 'protein': 1, 'fat': 0.... 
+20 {'carbohydrates': 11, 'protein': 0, 'fat': 0.4... 
+21 {'carbohydrates': 22.4, 'protein': 2.2, 'fat':... 
+22 {'carbohydrates': 15, 'protein': 0.4, 'fat': 0... 
+23 {'carbohydrates': 18, 'protein': 0, 'fat': 0, ... 
+24 {'carbohydrates': 13.12, 'protein': 0.54, 'fat... 
+25 {'carbohydrates': 11.4, 'protein': 0.7, 'fat':... 
+26 {'carbohydrates': 12, 'protein': 1.2, 'fat': 0... 
+27 {'carbohydrates': 5.5, 'protein': 0.8, 'fat': ... 
+28 {'carbohydrates': 3.9, 'protein': 0.9, 'fat': ... 
+29 {'carbohydrates': 0, 'protein': 0, 'fat': 0, '... 
+30 {'carbohydrates': 8, 'protein': 0.6, 'fat': 0.... 
+The result is in a nested json format. The 'nutrition' column contains multiple subcolumns, 
+so the data needs to be 'flattened' or normalized.
+df2 = pd.json_normalize(results)
+df2
+ genus name id family order \
+0 Malus Apple 6 Rosaceae Rosales 
+1 Prunus Apricot 35 Rosaceae Rosales 
+2 Musa Banana 1 Musaceae Zingiberales 
+3 Rubus Blackberry 64 Rosaceae Rosales 
+4 Fragaria Blueberry 33 Rosaceae Rosales 
+5 Prunus Cherry 9 Rosaceae None 
+6 Durio Durian 60 Malvaceae Malvales 
+7 Ficus Fig 68 Moraceae Rosales 
+8 Ribes Gooseberry 69 Grossulariaceae Saxifragales 
+9 Vitis Grapes 47 Vitaceae Vitales 
+10 Malus GreenApple 72 Rosaceae Rosales 
+11 Psidium Guava 37 Myrtaceae Myrtales 
+12 Apteryx Kiwi 66 Actinidiaceae Struthioniformes 
+13 Citrus Lemon 26 Rutaceae Sapindales 
+14 Citrus Lime 44 Rutaceae Sapindales 
+15 Vaccinium Lingonberry 65 Ericaceae Ericales 
+16 Litchi Lychee 67 Sapindaceae Sapindales 
+17 Mangifera Mango 27 Anacardiaceae Sapindales 
+18 Cucumis Melon 41 Cucurbitaceae Cucurbitaceae 
+19 Citrus Orange 2 Rutaceae Sapindales 
+20 Carica Papaya 42 Caricaceae Caricacea 
+21 Passiflora Passionfruit 70 Passifloraceae Malpighiales 
+22 Pyrus Pear 4 Rosaceae Rosales 
+23 Diospyros Persimmon 52 Ebenaceae Rosales 
+24 Ananas Pineapple 10 Bromeliaceae Poales 
+25 Prunus Plum 71 Rosaceae Rosales 
+26 Rubus Raspberry 23 Rosaceae Rosales 
+27 Fragaria Strawberry 3 Rosaceae Rosales 
+28 Solanum Tomato 5 Solanaceae Solanales 
+29 Spondias Umbu 73 Anacardiaceae 0 
+30 Citrullus Watermelon 25 Cucurbitaceae Cucurbitales 
+ nutritions.carbohydrates nutritions.protein nutritions.fat \
+0 11.40 0.30 0.40 
+1 3.90 0.50 0.10 
+2 22.00 1.00 0.20 
+3 9.00 1.30 0.40 
+4 5.50 0.00 0.40 
+5 12.00 1.00 0.30 
+6 27.10 1.50 5.30 
+7 19.00 0.80 0.30 
+8 10.00 0.90 0.60 
+9 18.10 0.72 0.16 
+10 3.10 0.40 0.10 
+11 14.00 2.60 1.00 
+12 15.00 1.10 0.50 
+13 9.00 1.10 0.30 
+14 8.40 0.30 0.10 
+15 11.30 0.75 0.34 
+16 17.00 0.80 0.44 
+17 15.00 0.82 0.38 
+18 8.00 0.00 0.00 
+19 8.30 1.00 0.20 
+20 11.00 0.00 0.40 
+21 22.40 2.20 0.70 
+22 15.00 0.40 0.10 
+23 18.00 0.00 0.00 
+24 13.12 0.54 0.12 
+25 11.40 0.70 0.28 
+26 12.00 1.20 0.70 
+27 5.50 0.80 0.40 
+28 3.90 0.90 0.20 
+29 0.00 0.00 0.00 
+30 8.00 0.60 0.20 
+ nutritions.calories nutritions.sugar 
+0 52 10.30 
+1 15 3.20 
+2 96 17.20 
+3 40 4.50 
+4 29 5.40 
+5 50 8.00 
+6 147 6.75 
+7 74 16.00 
+8 44 0.00 
+9 69 15.48 
+10 21 6.40 
+11 68 9.00 
+12 61 9.00 
+13 29 2.50 
+14 25 1.70 
+15 50 5.74 
+16 66 15.00 
+17 60 13.70 
+18 34 8.00 
+19 43 8.20 
+20 43 1.00 
+21 97 11.20 
+22 57 10.00 
+23 81 18.00 
+24 50 9.85 
+25 46 9.92 
+26 53 4.40 
+27 29 5.40 
+28 74 2.60 
+29 0 0.00 
+30 30 6.00 
+Let's see if we can extract some information from this dataframe. Perhaps, we need to 
+know the family and genus of a cherry.
+cherry = df2.loc[df2["name"] == 'Cherry']
+(cherry.iloc[0]['family']) , (cherry.iloc[0]['genus'])
+('Rosaceae', 'Prunus')
+Exercise 2
+In this Exercise, find out how many calories are contained in a banana.
+# Write your code here
+cal_banana=df2.loc[df2["name"]=='Banana']
+cal_banana.iloc[0]['nutritions.carbohydrates']
+22.0
+Exercise 3
+This page contains a list of free public APIs. Choose any API of your interest and use it to 
+load/extract some information, as shown in the example above.
+1. Using requests.get("url") function, load your data.
+# Write your code here
+data2 = requests.get("https://www.fishwatch.gov/api/species")
+1. Retrieve results using json.loads() function.
+# Write your code here
+results2 = json.loads(data2.text)
+1. Convert json data into pandas data frame.
+# Write your code here
+df3 = pd.DataFrame(results2)
+df3
+ Fishery Management \
+0 <ul>\n<li><a href="https://www.fisheries.noaa.... 
+1 <ul>\n<li><a href="https://www.fisheries.noaa.... 
+2 <ul>\n<li>\n<p><a href="https://archive.fisher... 
+3 <ul>\n<li><a href="https://www.fisheries.noaa.... 
+4 <ul>\n<li>The states and <a href="https://www.... 
+.. ... 
+111 <ul>\n<li><a href="https://www.fisheries.noaa.... 
+112 <ul>\n<li><a href="https://www.greateratlantic... 
+113 <ul>\n<li><a href="http://sero.nmfs.noaa.gov/"... 
+114 <ul>\n<li><a href="https://sero.nmfs.noaa.gov/... 
+115 <ul>\n<li>There are two stocks of Atlantic cod... 
+ Habitat \
+0 None 
+1 <ul>\n<li>White hake are groundfish, meaning t... 
+2 <ul>\n<li>Atlantic chub mackerel are a schooli... 
+3 <ul>\n<li>Shortfin squid live in deep and shal... 
+4 <ul>\n<li>American lobsters live on the ocean ... 
+.. ... 
+111 <ul>\n<li>Younger pollock live in the mid-wate... 
+112 <ul>\n<li>Monkfish live on the ocean floor, ty... 
+113 <ul>\n<li>Mahi mahi live near the surface in t... 
+114 <ul>\n<li>Cobia are found near structures in t... 
+115 <ul>\n<li>Atlantic cod live near the ocean flo... 
+ Habitat Impacts \
+0 Bottomfish fishing operations, typically using... 
+1 Area closures and gear restrictions protect ha... 
+2 Area closures and gear restrictions protect ha... 
+3 Fishing gears used to harvest shortfin squid h... 
+4 Fishing gears used to harvest American lobster... 
+.. ... 
+111 The Alaska pollock fishery uses midwater trawl... 
+112 Area closures and gear restrictions protect ha... 
+113 Fishing gear used to catch mahi mahi rarely co... 
+114 Fishing gear used to catch cobia rarely contac... 
+115 Area closures and gear restrictions protect ha... 
+ Image Gallery \
+0 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+1 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+2 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+3 None 
+4 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+.. ... 
+111 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+112 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+113 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+114 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+115 [{'src': 'https://www.fishwatch.gov/sites/defa... 
+ Location Management \
+0 <ul>\n<li>Crimson jobfish are distributed thro... None 
+1 <ul>\n<li>White hake are found in the northwes... None 
+2 <ul>\n<li>Atlantic chub mackerel in the wester... None 
+3 <ul>\n<li>Shortfin squid inhabits the continen... None 
+4 <ul>\n<li>American lobsters are found in the n... None 
+.. ... ... 
+111 <ul>\n<li>Alaska pollock are found throughout ... None 
+112 <ul>\n<li>Monkfish are found in the Northwest ... None 
+113 <ul>\n<li>Mahi mahi are found in the Atlantic,... None 
+114 <ul>\n<li>In U.S. waters, cobia are most abund... None 
+115 <ul>\n<li>In the Northwest Atlantic, cod range... None 
+ NOAA Fisheries Region \
+0 Pacific Islands 
+1 Greater Atlantic 
+2 Greater Atlantic 
+3 Greater Atlantic 
+4 Greater Atlantic 
+.. ... 
+111 Alaska 
+112 Greater Atlantic, Southeast 
+113 Greater Atlantic, Southeast 
+114 Greater Atlantic, Southeast 
+115 Greater Atlantic 
+ Population \
+0 The population level is unknown, but the stock... 
+1 Significantly below target population level. A... 
+2 The stock has never been assessed. The popula... 
+3 The population level is unknown. The species h... 
+4 Above target population levels in the Gulf of ... 
+.. ... 
+111 Above target population levels for the Aleutia... 
+112 Above target population levels. 
+113 Above target population levels. 
+114 Below target level but fishing rate promotes p... 
+115 Significantly below target population levels. ... 
+ Population Status \
+0 <ul>\n<li>There are five stocks of crimson job... 
+1 <ul>\n<li>According to the 2019 stock assessme... 
+2 <p>Atlantic chub mackerel has never been asses... 
+3 <ul>\n<li>According to the latest assessment, ... 
+4 <ul>\n<li>According to the 2020&nbsp;<a href="... 
+.. ... 
+111 <ul>\n<li>There are five stocks of walleye pol... 
+112 <ul>\n<li>There are two stocks of monkfish: Gu... 
+113 <ul>\n<li>Scientists assume populations are ab... 
+114 <ul>\n<li>\n<p>According to the 2020 stock ass... 
+115 <ul>\n<li>Gulf of Maine stock:\n<ul>\n<li>Acco... 
+ Scientific Name ... Selenium Serving Weight 
+Servings \
+0 Pristipomoides filamentosus ... 38.2 mcg 100 g (raw) 
+1 
+1 Urophycis tenuis ... 32.1 mcg 100 g (raw) 
+1 
+2 Scomber colias ... 44.1 mcg 100 g (raw) 
+1 
+3 Illex illecebrosus ... 44.8 mcg 100 g 
+1 
+4 Homarus americanus ... 41.4 mcg 100 g (raw) 
+1 
+.. ... ... ... ... ..
+. 
+111 Gadus chalcogrammus ... 21.9 mcg 100 g (raw) 
+1 
+112 Lophius americanus ... 36.5 mcg 100 g (raw) 
+1 
+113 Coryphaena hippurus ... 36.5 mcg 100 g (raw) 
+1 
+114 Rachycentron canadum ... 36.5 mcg 100 g (raw) 
+1 
+115 Gadus morhua ... 33.1 mcg 100 g 
+1 
+ Sodium Source Sugars,
+Total \
+0 64 mg <p>U.S -wild caught around Hawaii and Pacific ... 
+0 g 
+1 72 mg <p>White hake is wild-caught from Maine to sou... 
+0 g 
+2 90 mg <p>U.S. wild caught from Southern New England ... 
+0 g 
+3 44 mg <p>U.S. wild-caught from Maine to North Caroli... 
+0 g 
+4 296 mg <p>U.S. wild-caught from Maine to North Caroli... 
+0 g 
+.. ... ... 
+... 
+111 99 mg <p>U.S. wild-caught, mainly in the Bering Sea ... 
+0 g 
+112 18 mg <p>U.S. wild-caught from Maine to North Caroli... 
+0 g 
+113 88 mg <p>Wild-caught from Massachusetts to Texas.</p>\n 
+0 g 
+114 135 mg <p>Wild-caught from Virginia to Texas. Cobia i... 
+0 g 
+115 54 mg <p>Wild-caught from Maine to Virginia.</p>\n 
+0 g 
+ Taste \
+0 <p>Crimson jobfish has a delicate flavor.</p>\n 
+1 <p>White hake has a mild, almost sweet&nbsp;ta... 
+2 <p>Rich, pronounced flavor.</p>\n 
+3 <p>Mild, and subtly sweet.</p>\n<p>&nbsp;</p>\n 
+4 <p>Mild and sweet.</p>\n 
+.. ... 
+111 <p>Pollock has mild-tasting flesh and is simil... 
+112 <p>Mild.</p>\n 
+113 <p>Mahi mahi has a sweet, mild flavor. For a m... 
+114 <p>Cobia has a sweet, rich flavor.</p>\n 
+115 <p>Atlantic cod has a mild clean flavor. It is... 
+ Texture \
+0 <p>Crimson jobfish has&nbsp;a firm texture and... 
+1 <p>White hake has a soft, delicate texture tha... 
+2 <p>Soft, flaky, and moist.</p>\n 
+3 <p>Firm and meaty.</p>\n 
+4 <p>The meat is firm and somewhat fibrous. The ... 
+.. ... 
+111 <p>Pollock has a relatively fine texture and i... 
+112 <p>The tail meat is firm, dense, and relativel... 
+113 <p>Mahi mahi is lean and fairly firm with larg... 
+114 <p>Cobia is lean, moist, and firm with a nice ... 
+115 <p>Cod has large flakes. It's less firm than h... 
+ Path last_update 
+0 /profiles/crimson-jobfish 06/21/2022 - 12:00 
+1 /profiles/white-hake 03/24/2022 - 10:36 
+2 /profiles/atlantic-chub-mackerel 05/19/2021 - 12:59 
+3 /profiles/shortfin-squid 09/30/2020 - 15:24 
+4 /profiles/american-lobster 01/07/2022 - 10:44 
+.. ... ... 
+111 /profiles/alaska-pollock 08/24/2021 - 17:44 
+112 /profiles/monkfish 01/06/2022 - 14:55 
+113 /profiles/atlantic-mahi-mahi 10/20/2021 - 13:45 
+114 /profiles/cobia 02/17/2022 - 11:28 
+115 /profiles/atlantic-cod 02/17/2022 - 12:56 
+[116 rows x 56 columns]
+Congratulations! - You have completed the lab
+Author
+Svitlana Kramar
+Svitlana is a master’s degree Data Science and Analytics student at University of Calgary, 
+who enjoys travelling, learning new languages and cultures and loves spreading her 
+passion for Data Science.
+Copyright © 2020 IBM Corporation. All rights reserved.
